@@ -5,7 +5,7 @@ This is a fork of [TensorFlow](README_original.md) which includes a DLL wrapping
 We basically follow TensorFlow's [CMake](tensorflow/contrib/cmake/) build process. However we don't care about building the Python bindings, so no need to install Python 3.5 or SWIG if you don't already have them.
 
 * Clone this repository using your preferred git client.
-* Ensure you have [Visual Studio 2017](https://www.visualstudio.com/) with the C++ compiler and libraries.
+* Ensure you have a recent version of [Visual Studio](https://www.visualstudio.com/) (tested with 2015 and 2017), with the C++ compiler and libraries.
 * Install [CMake](https://cmake.org/), making sure to select the option to add it to your path.
 * Open the Start menu and run "Visual Studio 2017 -> x64 Native Tools Command Prompt".
 * `cd` to the `tensorflow\tensorflow\contrib\cmake` directory.
