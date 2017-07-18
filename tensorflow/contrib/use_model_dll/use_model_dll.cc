@@ -60,17 +60,22 @@ tfContext* tfLoadModel(const char* modelPath, const char* checkpointName, const 
 	return ctx;
 }
 
-void tfRunModel1D(tfContext* ctx, float* inputArray, int inputLength, float* outputArray, int outputLength)
+void tfRunModel1D(tfContext* ctx, float* inputArray, int inputLength, int inputWidth, float* outputArray, int outputLength)
 {
 	std::vector<std::pair<std::string, tensorflow::Tensor>> input;
 	std::vector<tensorflow::Tensor> output;
 
 	auto input_tensor = tensorflow::Tensor(tensorflow::DT_FLOAT,
-		tensorflow::TensorShape({ 1, inputLength }));
+		tensorflow::TensorShape({ inputWidth, inputLength }));
 	auto flatInput = input_tensor.flat<float>();
-	for (int i = 0; i < inputLength; i++)
+
+	int element = 0;
+	for (int i = 0; i < inputWidth; i++) //TODO here test looping through inner or outer dimension first
 	{
-		flatInput(i) = inputArray[i];
+		for (int j = 0; j < inputLength; j++)
+		{
+			flatInput(element++) = inputArray[i*inputLength + j];
+		}
 	}
 
 	input.emplace_back("input", input_tensor);
@@ -84,3 +89,28 @@ void tfRunModel1D(tfContext* ctx, float* inputArray, int inputLength, float* out
 		outputArray[i] = flatOutput(i);
 	}
 }
+
+//void tfRunModel1D(tfContext* ctx, float* inputArray, int inputLength, float* outputArray, int outputLength)
+//{
+//	std::vector<std::pair<std::string, tensorflow::Tensor>> input;
+//	std::vector<tensorflow::Tensor> output;
+//
+//	auto input_tensor = tensorflow::Tensor(tensorflow::DT_FLOAT,
+//		tensorflow::TensorShape({ 1, inputLength }));
+//	auto flatInput = input_tensor.flat<float>();
+//	for (int i = 0; i < inputLength; i++)
+//	{
+//		flatInput(i) = inputArray[i];
+//	}
+//
+//	input.emplace_back("input", input_tensor);
+//
+//	TF_CHECK_OK(ctx->session->Run(input, { "output" }, {}, &output));
+//
+//	auto flatOutput = output[0].flat<float>();
+//
+//	for (int i = 0; i < outputLength; i++)
+//	{
+//		outputArray[i] = flatOutput(i);
+//	}
+//}

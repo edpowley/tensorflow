@@ -29,15 +29,16 @@ USE_MODEL_DLL_API tfContext* tfLoadModel(const char* modelPath, const char* chec
 
 /**
 	Run a model previously loaded by loadModel.
-	The input and output are both 1-dimensional arrays of floats.
-	Note that it is the caller's responsibility to ensure that inputLength and
+	The input can be a 1- or 2-dimensional array, the output is a 1-dimensional array of floats.
+	Note that it is the caller's responsibility to ensure that inputLength, inputWidth and
 	outputLength match the parameters of the model being used.
 
 	ctx						a context returned by loadModel.
 	inputArray				pointer to the input data.
-	inputLength				how many elements inputArray contains.
+	inputLength				in the 1D case: the number of input floats; in the 2D case: the number of columns of the input array
+	inputWidth				in the 1D case: 1; in the 2D case: the number of rows of the input array
 	outputArray				pointer to a buffer which will receive the output
 							data.
 	outputLength			how many elements should be written to outputArray.
 **/
-USE_MODEL_DLL_API void tfRunModel1D(tfContext* ctx, float* inputArray, int inputLength, float* outputArray, int outputLength);
+USE_MODEL_DLL_API void tfRunModel1D(tfContext* ctx, float* inputArray, int inputLength, int inputWidth, float* outputArray, int outputLength);
